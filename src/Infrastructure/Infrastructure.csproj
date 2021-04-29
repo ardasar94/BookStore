@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="ardalis.specification.entityframeworkcore" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="5.0.5" />
   </ItemGroup>
 
