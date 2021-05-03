@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
+    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
         private readonly AppDbContext _dbContext;
 
@@ -55,7 +55,7 @@ namespace Infrastructure.Data
 
         public async Task<List<T>> ListAsync(ISpecification<T> spec)
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync(spec);
         }
 
         public async Task UpdateAsync(T entity)

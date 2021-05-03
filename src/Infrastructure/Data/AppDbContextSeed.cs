@@ -38,9 +38,9 @@ namespace Infrastructure.Data
                     new Product() { Name = "Homage to Catalonia", Price = 14.71m, PictureUri = "samples/07.jpg", Author = author2, Category = cat2 },
                     new Product() { Name = "The 7 Habits of Highly Effective People: Powerful Lessons in Personal Change", Price = 19.05m, PictureUri = "samples/08.jpg", Author = author3, Category = cat3 },
                     new Product() { Name = "The Secret", Price = 11.32m, PictureUri = "samples/09.jpg", Author = author4, Category = cat3 },
-                    new Product() { Name = "The Magic", Price = 16.62m, PictureUri = "samples/010.jpg", Author = author4, Category = cat3 },
-                    new Product() { Name = "The 48 Laws of Power", Price = 9.99m, PictureUri = "samples/011.jpg", Author = author5, Category = cat4 },
-                    new Product() { Name = "Sapiens: A Brief History of Humankind", Price = 11.29m, PictureUri = "samples/012.jpg", Author = author6, Category = cat4 }
+                    new Product() { Name = "The Magic", Price = 16.62m, PictureUri = "samples/10.jpg", Author = author4, Category = cat3 },
+                    new Product() { Name = "The 48 Laws of Power", Price = 9.99m, PictureUri = "samples/11.jpg", Author = author5, Category = cat4 },
+                    new Product() { Name = "Sapiens: A Brief History of Humankind", Price = 11.29m, PictureUri = "samples/12.jpg", Author = author6, Category = cat4 }
                     );
                 await db.SaveChangesAsync();
             }
