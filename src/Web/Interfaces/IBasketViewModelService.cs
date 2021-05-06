@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.ViewModels;
 
 namespace Web.Interfaces
 {
@@ -10,5 +11,7 @@ namespace Web.Interfaces
         string GetOrCreateBuyerId();
 
         Task<int> GetOrCreateBasketIdAsync();
+
+        Task<BasketItemsCountViewModel> GetBasketItemsCountViewModel(int basketId);
     }
 }
