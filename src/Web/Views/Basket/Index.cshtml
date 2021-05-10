@@ -14,6 +14,22 @@
 
 @section scripts{ 
     <script>
+        $("body").on("change", "[data-update-basket-item]", function (event) {
+            var basketItemId = $(this).data("update-basket-item");
+            var quantity = Number($(this).val());
+
+             $.ajax({
+                type: "POST",
+                 url: "@Url.Action("UpdateBasketItem", "Basket")",
+                 data: { basketItemId, quantity },
+                success: function (data) {
+                    $("#basket").html(data);
+                    var basketItemsCount = $("#basketItemsCount").val();
+                    $("#navBasketItemsCount").text(basketItemsCount);
+                }
+            });
+        });
+
         $("body").on("click", "[data-remove-basket-item]", function (event) {
             event.preventDefault();
             var basketItemId = $(this).data("remove-basket-item");
@@ -21,7 +37,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("RemoveBasketItem", "Basket")",
-                data: { basketItemId: basketItemId },
+                data: { basketItemId },
                 success: function (data) {
                     $("#basket").html(data);
                     var basketItemsCount = $("#basketItemsCount").val();

@@ -30,7 +30,7 @@ namespace Web.Controllers
             var basketId = await _basketViewModelService.GetOrCreateBasketIdAsync();
             await _basketService.AddItemToBasket(basketId, productId, quantity);
             
-            return Json(await _basketViewModelService.GetBasketItemsCountViewModel(basketId));
+            return Json(await _basketViewModelService.GetBasketItemsCountViewModel());
         }
 
         [HttpPost]
@@ -38,6 +38,17 @@ namespace Web.Controllers
         {
             var basketID = await _basketViewModelService.GetOrCreateBasketIdAsync();
             await _basketService.DeleteBasketItem(basketID, basketItemId);
+            return PartialView("_BasketPartial", await _basketViewModelService.GetBasketViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateBasketItem(int basketItemId, int quantity)
+        {
+            if (quantity < 1)
+                return BadRequest("The quantity cannot be lower than 1.");
+
+            var basketID = await _basketViewModelService.GetOrCreateBasketIdAsync();
+            await _basketService.UpdateBasketItem(basketID, basketItemId, quantity);
             return PartialView("_BasketPartial", await _basketViewModelService.GetBasketViewModel());
         }
     }
