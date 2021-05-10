@@ -27,15 +27,19 @@ namespace Web.Services
             _productRepository = productRepository;
         }
 
-        public async Task<BasketItemsCountViewModel> GetBasketItemsCountViewModel()
+        public async Task<BasketItemsCountViewModel> GetBasketItemsCountViewModel(int? basketId = null)
         {
-            string buyerId = GetBuyerId();
             var vm = new BasketItemsCountViewModel();
-            if (buyerId == null) return vm;
-            var spec = new BasketSpecification(buyerId);
-            var basket = await _basketRepository.FirstOrDefaultAsync(spec);
-            if (basket == null) return vm;
-            vm.BasketItemsCount = await _basketService.BasketItemsCount(basket.Id);
+            if (!basketId.HasValue)
+            {
+                string buyerId = GetBuyerId();
+                if (buyerId == null) return vm;
+                var spec = new BasketSpecification(buyerId);
+                var basket = await _basketRepository.FirstOrDefaultAsync(spec);
+                if (basket == null) return vm;
+                basketId = basket.Id;
+            }
+            vm.BasketItemsCount = await _basketService.BasketItemsCount(basketId.Value);
             return vm;
 
 
@@ -54,7 +58,7 @@ namespace Web.Services
             foreach (var item in basket.Items.OrderBy(x => x.Id))
             {
                 var product = products.First(x => x.Id == item.ProductId);
-                basketItems.Add(new BasketItemViewModel() 
+                basketItems.Add(new BasketItemViewModel()
                 {
                     Id = item.Id,
                     ProductId = item.ProductId,
@@ -65,7 +69,7 @@ namespace Web.Services
                 });
             }
 
-            return new BasketViewModel() 
+            return new BasketViewModel()
             {
                 Id = basketId,
                 BuyerId = basket.BuyerId,
@@ -89,11 +93,11 @@ namespace Web.Services
             var basket = await _basketRepository.FirstOrDefaultAsync(spec);
 
             if (basket == null)
-            {           
+            {
                 basket = new Basket() { BuyerId = buyerId };
                 basket = await _basketRepository.AddAsync(basket);
             }
-                return basket.Id;
+            return basket.Id;
         }
 
         public string GetOrCreateBuyerId()

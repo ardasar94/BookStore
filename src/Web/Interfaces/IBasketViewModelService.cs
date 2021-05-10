@@ -14,7 +14,7 @@ namespace Web.Interfaces
 
         Task<int> GetOrCreateBasketIdAsync();
 
-        Task<BasketItemsCountViewModel> GetBasketItemsCountViewModel();
+        Task<BasketItemsCountViewModel> GetBasketItemsCountViewModel(int? basketId = null);
 
         Task<BasketViewModel> GetBasketViewModel();
 

@@ -30,7 +30,7 @@ namespace Web.Controllers
             var basketId = await _basketViewModelService.GetOrCreateBasketIdAsync();
             await _basketService.AddItemToBasket(basketId, productId, quantity);
             
-            return Json(await _basketViewModelService.GetBasketItemsCountViewModel());
+            return Json(await _basketViewModelService.GetBasketItemsCountViewModel(basketId));
         }
 
         [HttpPost]
