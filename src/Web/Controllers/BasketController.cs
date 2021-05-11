@@ -1,4 +1,6 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,12 +15,15 @@ namespace Web.Controllers
     {
         private readonly IBasketViewModelService _basketViewModelService;
         private readonly IBasketService _basketService;
+        private readonly IOrderService _orderService;
 
-        public BasketController(IBasketViewModelService basketViewModelService, IBasketService basketService)
+        public BasketController(IBasketViewModelService basketViewModelService, IBasketService basketService, IOrderService orderService)
         {
             _basketViewModelService = basketViewModelService;
             _basketService = basketService;
+            _orderService = orderService;
         }
+
         public async Task<IActionResult> Index()
         {
             return View(await _basketViewModelService.GetBasketViewModel());
@@ -50,6 +55,40 @@ namespace Web.Controllers
             var basketID = await _basketViewModelService.GetOrCreateBasketIdAsync();
             await _basketService.UpdateBasketItem(basketID, basketItemId, quantity);
             return PartialView("_BasketPartial", await _basketViewModelService.GetBasketViewModel());
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Checkout()
+        {
+            var vm = new CheckoutViewModel()
+            {
+                BasketItems = await _basketViewModelService.GetBasketItems()
+            };
+            return View(vm);
+        }
+
+        [Authorize, HttpPost, ValidateAntiForgeryToken]
+        public async Task<ActionResult> Checkout(CheckoutViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                int basketId = await _basketViewModelService.GetOrCreateBasketIdAsync();
+                //process the payment
+                var adress = new Address()
+                {
+                    City = model.City,
+                    Country = model.Country,
+                    State = model.State,
+                    Street = model.Street,
+                    ZipCode =model.ZipCode
+                };
+                await _orderService.CreateOrderAsync(basketId, adress);
+                await _basketService.DeleteBasketAsync(basketId);
+                return RedirectToAction("Success");
+            }
+
+            model.BasketItems = await _basketViewModelService.GetBasketItems();
+            return View(model);
         }
     }
 }

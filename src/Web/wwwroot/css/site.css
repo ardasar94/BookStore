@@ -98,3 +98,7 @@ body {
     font-size: 0.8rem;
     margin-bottom: .2rem;
 }
+
+.field-validation-error{
+    color: var(--danger);
+}
