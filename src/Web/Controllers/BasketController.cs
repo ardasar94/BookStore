@@ -90,5 +90,10 @@ namespace Web.Controllers
             model.BasketItems = await _basketViewModelService.GetBasketItems();
             return View(model);
         }
+
+        public IActionResult Success()
+        {
+            return View();
+        }
     }
 }
