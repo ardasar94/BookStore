@@ -12,5 +12,7 @@ namespace Web.Interfaces
         Task<HomeIndexViewModel> GetHomeIndexViewModel(int? categoryId, int? authorId, int page, int pageSize);
         Task<List<SelectListItem>> GetCategories();
         Task<List<SelectListItem>> GetAuthors();
+
+        Task<List<OrderViewModel>> GetOrders();
     }
 }
